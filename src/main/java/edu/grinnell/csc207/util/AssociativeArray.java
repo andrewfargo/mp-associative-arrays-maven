@@ -62,7 +62,17 @@ public class AssociativeArray<K, V> {
    * @return a new copy of the array
    */
   public AssociativeArray<K, V> clone() {
-    return null; // STUB
+    AssociativeArray<K, V> ret = new AssociativeArray<K, V>();
+    for (int i = 0; i < this.size(); i++) {
+      KVPair<K, V> current = this.pairs[i];
+      try {
+	ret.set(current.key, current.val);
+      } catch (NullKeyException e) {
+	// This really shouldn't happen
+	throw new RuntimeException("Nullified Key");
+      } // try/catch
+    }
+    return ret;
   } // clone()
 
   /**
@@ -71,7 +81,13 @@ public class AssociativeArray<K, V> {
    * @return a string of the form "{Key0:Value0, Key1:Value1, ... KeyN:ValueN}"
    */
   public String toString() {
-    return "{}"; // STUB
+    String ret = "{";
+    for (KVPair<K,V> pair : this.pairs) {
+      ret += pair.toString() + ", ";
+    } // for
+    ret = ret.substring(0, ret.length() - 2); // remove the last comma
+    ret += "}";
+    return ret;
   } // toString()
 
   // +----------------+----------------------------------------------
@@ -83,7 +99,7 @@ public class AssociativeArray<K, V> {
    * get(key) will return value.
    *
    * @param K
-   *   The key whose value we are seeting.
+   *   The key whose value we are setting.
    * @param V
    *   The value of that key.
    *
@@ -91,7 +107,18 @@ public class AssociativeArray<K, V> {
    *   If the client provides a null key.
    */
   public void set(K key, V value) throws NullKeyException {
-    // STUB
+    if (key == null) {
+      throw new NullKeyException();
+    } // if
+    try {
+      int idx = this.find(key);
+      this.pairs[idx].val = value;
+    } catch (KeyNotFoundException e) {
+      if (this.size() == this.pairs.length) {
+	this.expand();
+      } // if
+      this.pairs[this.size++] = new KVPair<K, V>(key, value);
+    } // try/catch
   } // set(K,V)
 
   /**
@@ -104,7 +131,7 @@ public class AssociativeArray<K, V> {
    *   when the key is null or does not appear in the associative array.
    */
   public V get(K key) throws KeyNotFoundException {
-    return null; // STUB
+    return this.pairs[this.find(key)].val;
   } // get(K)
 
   /**
@@ -112,7 +139,12 @@ public class AssociativeArray<K, V> {
    * return false for the null key.
    */
   public boolean hasKey(K key) {
-    return false; // STUB
+    try {
+      this.find(key);
+      return true;
+    } catch (KeyNotFoundException e) {
+      return false;
+    } // try/catch
   } // hasKey(K)
 
   /**
@@ -121,7 +153,20 @@ public class AssociativeArray<K, V> {
    * in the associative array, does nothing.
    */
   public void remove(K key) {
-    // STUB
+    try {
+      int idx = this.find(key);
+      this.pairs[idx] = null;
+      if (idx == this.size - 1) {
+	this.size--;
+	return;
+      } // if
+      int lastIdx = size - 1;
+      this.pairs[idx] = this.pairs[lastIdx];
+      this.pairs[lastIdx] = null;
+      this.size--;
+    } catch (KeyNotFoundException e) {
+      return;
+    } // try/catch
   } // remove(K)
 
   /**
@@ -153,7 +198,12 @@ public class AssociativeArray<K, V> {
    *   If the key does not appear in the associative array.
    */
   int find(K key) throws KeyNotFoundException {
-    throw new KeyNotFoundException();   // STUB
+    for (int i = 0; i < this.size(); i++) {
+      if (this.pairs[i].key.equals(key)) {
+	return i;
+      } // if
+    } // for
+    throw new KeyNotFoundException();
   } // find(K)
 
 } // class AssociativeArray
