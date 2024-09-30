@@ -35,7 +35,7 @@ public class AssociativeArray<K, V> {
   /**
    * The array of key/value pairs.
    */
-  KVPair<K, V> pairs[];
+  KVPair<K, V>[] pairs;
 
   // +--------------+------------------------------------------------
   // | Constructors |
@@ -71,7 +71,7 @@ public class AssociativeArray<K, V> {
         // This really shouldn't happen
         throw new RuntimeException("Nullified Key");
       } // try/catch
-    }
+    } // for i
     return ret;
   } // clone()
 
@@ -82,7 +82,8 @@ public class AssociativeArray<K, V> {
    */
   public String toString() {
     String ret = "{";
-    for (KVPair<K,V> pair : this.pairs) {
+    for (int i = 0; i < this.size(); i++) {
+      KVPair<K, V> pair = this.pairs[i];
       ret += pair.toString() + ", ";
     } // for
     ret = ret.substring(0, ret.length() - 2); // remove the last comma
@@ -98,9 +99,9 @@ public class AssociativeArray<K, V> {
    * Set the value associated with key to value. Future calls to
    * get(key) will return value.
    *
-   * @param K
+   * @param key
    *   The key whose value we are setting.
-   * @param V
+   * @param value
    *   The value of that key.
    *
    * @throws NullKeyException
@@ -126,7 +127,7 @@ public class AssociativeArray<K, V> {
    *
    * @param key
    *   A key
-   *
+   * @return The corresponding value.
    * @throws KeyNotFoundException
    *   when the key is null or does not appear in the associative array.
    */
@@ -203,7 +204,7 @@ public class AssociativeArray<K, V> {
    *
    * @param key
    *   The key of the entry.
-   *
+   * @return The index into the pair array at which `key` is located.
    * @throws KeyNotFoundException
    *   If the key does not appear in the associative array.
    */
