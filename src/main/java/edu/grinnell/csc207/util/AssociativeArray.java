@@ -137,6 +137,11 @@ public class AssociativeArray<K, V> {
   /**
    * Determine if key appears in the associative array. Should
    * return false for the null key.
+   *
+   * @param key
+   *   The key to test.
+   * @return true if the key is present in the list,
+   *   false otherwise.
    */
   public boolean hasKey(K key) {
     try {
@@ -151,6 +156,9 @@ public class AssociativeArray<K, V> {
    * Remove the key/value pair associated with a key. Future calls
    * to get(key) will throw an exception. If the key does not appear
    * in the associative array, does nothing.
+   *
+   * @param key
+   *   The key to remove.
    */
   public void remove(K key) {
     try {
@@ -171,6 +179,8 @@ public class AssociativeArray<K, V> {
 
   /**
    * Determine how many key/value pairs are in the associative array.
+   *
+   * @return The pair count as an integer.
    */
   public int size() {
     return this.size;
