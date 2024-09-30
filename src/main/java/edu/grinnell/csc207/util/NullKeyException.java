@@ -14,7 +14,7 @@ public class NullKeyException extends Exception {
    * Create a new exception.
    */
   public NullKeyException() {
-    super("key not found");
+    super("key is null");
   } // NullKeyException()
 
   /**
