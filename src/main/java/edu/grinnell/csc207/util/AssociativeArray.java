@@ -66,10 +66,10 @@ public class AssociativeArray<K, V> {
     for (int i = 0; i < this.size(); i++) {
       KVPair<K, V> current = this.pairs[i];
       try {
-	ret.set(current.key, current.val);
+        ret.set(current.key, current.val);
       } catch (NullKeyException e) {
-	// This really shouldn't happen
-	throw new RuntimeException("Nullified Key");
+        // This really shouldn't happen
+        throw new RuntimeException("Nullified Key");
       } // try/catch
     }
     return ret;
@@ -115,7 +115,7 @@ public class AssociativeArray<K, V> {
       this.pairs[idx].val = value;
     } catch (KeyNotFoundException e) {
       if (this.size() == this.pairs.length) {
-	this.expand();
+        this.expand();
       } // if
       this.pairs[this.size++] = new KVPair<K, V>(key, value);
     } // try/catch
@@ -165,8 +165,8 @@ public class AssociativeArray<K, V> {
       int idx = this.find(key);
       this.pairs[idx] = null;
       if (idx == this.size - 1) {
-	this.size--;
-	return;
+        this.size--;
+        return;
       } // if
       int lastIdx = size - 1;
       this.pairs[idx] = this.pairs[lastIdx];
@@ -210,7 +210,7 @@ public class AssociativeArray<K, V> {
   int find(K key) throws KeyNotFoundException {
     for (int i = 0; i < this.size(); i++) {
       if (this.pairs[i].key.equals(key)) {
-	return i;
+        return i;
       } // if
     } // for
     throw new KeyNotFoundException();
